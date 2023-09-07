@@ -8,8 +8,8 @@ public class Movement : MonoBehaviour
 
     private Vector2 _movementDirection = Vector2.zero;
     private Rigidbody2D _rigidbody;
-    private Animator _anim;
-    private SpriteRenderer _characterRenderer;
+    [HideInInspector] public Animator Anim;
+    [HideInInspector] public SpriteRenderer Sprite;
     [SerializeField] private float _speed;
     [SerializeField] private float _runBonus;
 
@@ -17,10 +17,6 @@ public class Movement : MonoBehaviour
     {
         _controller = GetComponent<CharacterController>();
         _rigidbody = GetComponent<Rigidbody2D>();
-
-        // Sprite가 좀 늦게 도착할지도?
-        _anim = GetComponentInChildren<Animator>();
-        _characterRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
     private void Start()
@@ -45,7 +41,7 @@ public class Movement : MonoBehaviour
             float rotZ = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
             if(Mathf.Abs(rotZ) != 90f) {
-                _characterRenderer.flipX = Mathf.Abs(rotZ) < 90f;
+                Sprite.flipX = Mathf.Abs(rotZ) < 90f;
             }
             
         }
@@ -60,12 +56,16 @@ public class Movement : MonoBehaviour
         _rigidbody.velocity = direction;
 
         // 애니메이션에 speed 값, ApplyAnimation은 오버로드 해도 될 듯
-        if(_anim != null) {
+        if(Anim != null) {
             ApplyAnimation(direction.magnitude);
         }
     }
 
     private void ApplyAnimation(float speed) {
-        _anim.SetFloat("Speed", speed);
+        Anim.SetFloat("Speed", speed);
+    }
+
+    public void SetAnimator(Animator anim) {
+        Anim = anim;
     }
 }
