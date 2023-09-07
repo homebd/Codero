@@ -2,20 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MovementController : MonoBehaviour
+public class Movement : MonoBehaviour
 {
     private CharacterController _controller;
 
     private Vector2 _movementDirection = Vector2.zero;
     private Rigidbody2D _rigidbody;
-    [SerializeField] private Animator _anim;
-    [SerializeField] private SpriteRenderer _characterRenderer;
+    private Animator _anim;
+    private SpriteRenderer _characterRenderer;
     [SerializeField] private float _speed;
+    [SerializeField] private float _runBonus;
 
     private void Awake()
     {
         _controller = GetComponent<CharacterController>();
         _rigidbody = GetComponent<Rigidbody2D>();
+
+        // Sprite가 좀 늦게 도착할지도?
+        _anim = GetComponentInChildren<Animator>();
+        _characterRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
     private void Start()
@@ -45,8 +50,12 @@ public class MovementController : MonoBehaviour
             
         }
 
+        
         // 방향 * 속도
-        direction = direction * _speed;
+        direction = direction * _speed * _runBonus;
+        if(_controller.IsRunning) {
+            direction *= _runBonus;
+        }
 
         _rigidbody.velocity = direction;
 

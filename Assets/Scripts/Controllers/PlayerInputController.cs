@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class PlayerInputController : CharacterController
 {
     private Camera _camera;
+
     private void Awake()
     {
         _camera = Camera.main;
@@ -32,5 +33,10 @@ public class PlayerInputController : CharacterController
     public void OnCommunicate(InputValue value)
     {
         Debug.Log("OnFire" + value.ToString());
+    }
+
+    public void OnRun(InputValue value)
+    {
+        IsRunning = value.isPressed;
     }
 }
