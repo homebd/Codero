@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class Player : Character
 {
-    public Text NameText;
     public List<GameObject> Sprite;
 
     private void Awake() {
@@ -19,7 +18,5 @@ public class Player : Character
         // 스프라이트에 따라 렌더러 할당
         SpriteRenderer sprite = go.GetComponent<SpriteRenderer>();
         gameObject.GetComponent<Movement>().Sprite = sprite;
-        
-        NameText.text = Managers.GameManager.PlayerName;
     }
 }
